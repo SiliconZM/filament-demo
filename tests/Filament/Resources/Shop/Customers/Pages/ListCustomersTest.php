@@ -1,6 +1,7 @@
 <?php
 
 use App\Filament\Resources\Shop\Customers\Pages\ListCustomers;
+use App\Models\Address;
 use App\Models\Shop\Customer;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
@@ -12,6 +13,16 @@ it('can render the list page', function () {
     Livewire::test(ListCustomers::class)
         ->assertOk()
         ->assertCanSeeTableRecords($records);
+});
+
+it('can render the country column for customers with addresses', function () {
+    $customer = Customer::factory()->create();
+    $address = Address::factory()->create();
+    $customer->addresses()->attach($address);
+
+    Livewire::test(ListCustomers::class)
+        ->assertOk()
+        ->assertCanSeeTableRecords([$customer]);
 });
 
 it('can send email to customer', function () {

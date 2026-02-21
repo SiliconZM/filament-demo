@@ -15,7 +15,6 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Squire\Models\Country;
 
 class CustomersTable
 {
@@ -32,7 +31,7 @@ class CustomersTable
                     ->searchable(isIndividual: true, isGlobal: false)
                     ->sortable(),
                 TextColumn::make('country')
-                    ->getStateUsing(fn ($record): ?string => Country::find($record->addresses->first()?->country)->name ?? null),
+                    ->getStateUsing(fn ($record): ?string => $record->addresses->first()?->country?->getLabel()),
                 TextColumn::make('phone')
                     ->searchable()
                     ->sortable(),
